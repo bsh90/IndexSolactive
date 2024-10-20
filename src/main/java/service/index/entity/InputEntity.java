@@ -2,6 +2,7 @@ package service.index.entity;
 
 import jakarta.persistence.*;
 
+@Table(name = "input")
 @Entity
 public class InputEntity {
 
@@ -10,6 +11,7 @@ public class InputEntity {
     @Column(name = "ID", unique = true, nullable = false, updatable = false)
     public Long id;
 
-    @Column(name = "index")
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "index_id", referencedColumnName = "id")
     public IndexEntity index;
 }

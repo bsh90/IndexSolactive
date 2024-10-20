@@ -20,6 +20,6 @@ public class IndexshareEntity {
     public Double numberOfshares;
 
     @ManyToOne
-    @JoinColumn(name="index_id", nullable = false)
+    @JoinColumn(name="index_id")
     public IndexEntity index;
 }

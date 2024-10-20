@@ -44,7 +44,7 @@ public class IndexService {
         }
 
         InputEntity inputEntity = inputMapper.to(inputDto);
-        InputEntity createdInputEntity = inputRepository.saveAndFlush(inputEntity);
+        InputEntity createdInputEntity = inputRepository.save(inputEntity);
         InputDto createdInputDto = inputMapper.from(createdInputEntity);
         return new ResponseEntity<>(createdInputDto, responseHeaders, HttpStatusCode.valueOf(201));
     }
