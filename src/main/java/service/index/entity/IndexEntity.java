@@ -1,10 +1,7 @@
 package service.index.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.List;
 
@@ -20,6 +17,7 @@ public class IndexEntity {
     @OneToOne(mappedBy = "index")
     public InputEntity inputEntity;
 
+    @NotBlank
     @Column(name = "indexName")
     public String indexName;
 

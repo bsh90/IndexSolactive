@@ -5,10 +5,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import service.index.dto.IndexshareDto;
 import service.index.dto.InputDto;
 import service.index.entity.IndexEntity;
 import service.index.entity.InputEntity;
-import service.index.mapper.IndexMapper;
 import service.index.mapper.InputMapper;
 import service.index.respository.IndexRepository;
 import service.index.respository.InputRepository;
@@ -42,6 +42,17 @@ public class IndexService {
         if (!availableIndexEntities.isEmpty()) {
             return new ResponseEntity<>(null, responseHeaders, HttpStatusCode.valueOf(409));
         }
+        List<IndexshareDto> indexshareDtosBlankName = inputDto.index.getIndexshares().stream().filter(share -> share.shareName.isBlank()).toList();
+        List<IndexshareDto> indexshareDtosNegativePrice = inputDto.index.getIndexshares().stream().filter(share -> share.sharePrice <= 0).toList();
+        List<IndexshareDto> indexshareDtosNegativeShareNumber = inputDto.index.getIndexshares().stream().filter(share -> share.numberOfshares <= 0).toList();
+        if (!indexshareDtosBlankName.isEmpty() ||
+                !indexshareDtosNegativePrice.isEmpty() ||
+                !indexshareDtosNegativeShareNumber.isEmpty() ||
+                inputDto.index.indexName.isBlank() ||
+                inputDto.index.getIndexshares().size() < 2) {
+            return new ResponseEntity<>(null, responseHeaders, HttpStatusCode.valueOf(400));
+        }
+
 
         InputEntity inputEntity = inputMapper.to(inputDto);
         InputEntity createdInputEntity = inputRepository.save(inputEntity);
