@@ -2,25 +2,27 @@ package service.index.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 import java.util.List;
 
 @Table(name = "index")
 @Entity
+@Data
 public class IndexEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id", unique = true, nullable = false, updatable = false)
-    public Long id;
+    Long id;
 
     @OneToOne(mappedBy = "index")
-    public InputEntity inputEntity;
+    CreationInputEntity creationInputEntity;
 
     @NotBlank
     @Column(name = "indexName")
-    public String indexName;
+    String indexName;
 
     @OneToMany(mappedBy = "index", cascade=CascadeType.ALL)
-    public List<IndexshareEntity> indexshares;
+    List<IndexshareEntity> indexshares;
 }

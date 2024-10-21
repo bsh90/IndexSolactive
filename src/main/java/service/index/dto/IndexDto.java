@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class IndexDto {
-    public String indexName;
-    public List<IndexshareDto> indexshares;
+    String indexName;
+    List<IndexshareDto> indexshares;
 }

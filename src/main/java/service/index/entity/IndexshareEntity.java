@@ -3,8 +3,10 @@ package service.index.entity;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
 @Entity
+@Data
 public class IndexshareEntity {
 
     @Id

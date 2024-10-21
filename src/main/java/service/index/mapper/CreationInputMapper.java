@@ -3,16 +3,16 @@ package service.index.mapper;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingConstants;
-import service.index.dto.InputDto;
-import service.index.entity.InputEntity;
+import service.index.dto.CreationInputDto;
+import service.index.entity.CreationInputEntity;
 
 @Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
-public interface InputMapper {
+public interface CreationInputMapper {
 
     @Mapping(source="index", target="index")
     @Mapping(target="id", ignore = true)
-    InputEntity to(InputDto inputDto);
+    CreationInputEntity to(CreationInputDto creationInputDto);
 
     @Mapping(source="index", target="index")
-    InputDto from(InputEntity inputEntity);
+    CreationInputDto from(CreationInputEntity creationInputEntity);
 }

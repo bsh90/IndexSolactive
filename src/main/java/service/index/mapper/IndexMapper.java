@@ -11,7 +11,7 @@ public interface IndexMapper {
 
     @Mapping(source="indexshares", target="indexshares")
     @Mapping(target="id", ignore = true)
-    @Mapping(target="inputEntity", ignore = true)
+    @Mapping(target="creationInputEntity", ignore = true)
     IndexEntity to(IndexDto indexDto);
 
     @Mapping(source="indexshares", target="indexshares")

@@ -5,7 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import service.index.dto.InputDto;
+import service.index.dto.AdjustmentInputDto;
+import service.index.dto.CreationInputDto;
 import service.index.service.IndexService;
 
 @RestController
@@ -19,7 +20,12 @@ public class Controller {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<InputDto> create(@RequestBody InputDto inputDto){
-        return indexService.create(inputDto);
+    public ResponseEntity<CreationInputDto> createIndex(@RequestBody CreationInputDto creationInputDto){
+        return indexService.createIndex(creationInputDto);
+    }
+
+    @PostMapping("/indexAdjustment")
+    public ResponseEntity adjustIndex(@RequestBody AdjustmentInputDto adjustmentInputDto){
+        return indexService.adjustIndex(adjustmentInputDto);
     }
 }

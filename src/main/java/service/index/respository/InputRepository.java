@@ -2,8 +2,8 @@ package service.index.respository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import service.index.entity.InputEntity;
+import service.index.entity.CreationInputEntity;
 
 @Repository
-public interface InputRepository  extends JpaRepository<InputEntity, Long> {
+public interface InputRepository  extends JpaRepository<CreationInputEntity, Long> {
 }
