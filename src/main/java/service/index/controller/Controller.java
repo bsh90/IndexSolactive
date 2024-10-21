@@ -2,9 +2,7 @@ package service.index.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import service.index.dto.AdjustmentInputDto;
 import service.index.dto.CreationInputDto;
 import service.index.service.IndexService;
@@ -27,5 +25,15 @@ public class Controller {
     @PostMapping("/indexAdjustment")
     public ResponseEntity adjustIndex(@RequestBody AdjustmentInputDto adjustmentInputDto){
         return indexService.adjustIndex(adjustmentInputDto);
+    }
+
+    @GetMapping("/indexState")
+    public ResponseEntity getState() {
+        return indexService.getState();
+    }
+
+    @GetMapping("/indexState/{index_name}")
+    public ResponseEntity getLatestState(@RequestParam("index_name") String index_name) {
+        return indexService.getLatestState(index_name);
     }
 }
