@@ -2,10 +2,12 @@ package service.index.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Table(name = "input")
 @Entity
 @Data
+@EqualsAndHashCode(exclude = "indexshares")
 public class CreationInputEntity {
 
     @Id

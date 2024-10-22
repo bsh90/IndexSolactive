@@ -1,12 +1,15 @@
 package service.index.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
+@EqualsAndHashCode(exclude = "indexshares")
 public class IndexshareEntity {
 
     @Id
@@ -26,7 +29,7 @@ public class IndexshareEntity {
     @Column(name = "numberOfshares")
     public Double numberOfshares;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="index_id")
     public IndexEntity index;
 }
