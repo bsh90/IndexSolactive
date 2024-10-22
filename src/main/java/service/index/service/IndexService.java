@@ -1,5 +1,6 @@
 package service.index.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
@@ -58,6 +59,7 @@ public class IndexService {
         this.indexshareMapper = indexshareMapper;
     }
 
+    @Transactional
     public ResponseEntity<CreationInputDto> createIndex(CreationInputDto creationInputDto) {
         HttpHeaders responseHeaders = new HttpHeaders();
 
@@ -93,6 +95,7 @@ public class IndexService {
 //                indexshareDtos.size() >= 2;
     }
 
+    @Transactional
     public ResponseEntity adjustIndex(AdjustmentInputDto adjustmentInputDto) {
         HttpHeaders responseHeaders = new HttpHeaders();
 
