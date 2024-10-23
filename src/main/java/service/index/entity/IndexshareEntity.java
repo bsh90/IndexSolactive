@@ -9,7 +9,6 @@ import lombok.EqualsAndHashCode;
 
 @Entity
 @Data
-@EqualsAndHashCode(exclude = "indexshares")
 public class IndexshareEntity {
 
     @Id

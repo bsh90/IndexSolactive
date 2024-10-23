@@ -7,7 +7,6 @@ import lombok.EqualsAndHashCode;
 @Table(name = "input")
 @Entity
 @Data
-@EqualsAndHashCode(exclude = "indexshares")
 public class CreationInputEntity {
 
     @Id

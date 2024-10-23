@@ -1,17 +1,14 @@
 package service.index.entity;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 
 @Table(name = "index")
 @Entity
 @Data
-@EqualsAndHashCode(exclude = "indexshares")
 public class IndexEntity {
 
     @Id
