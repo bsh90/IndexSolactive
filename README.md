@@ -2,7 +2,7 @@
 
 ### Installation and Running the project
 This application is made by gradle, springboot 3.3.4 and java 17. 
-After installing the requirments, fun the application by `./gradlew bootRun`.
+After installing the requirments, run the application by `./gradlew bootRun`.
 
 ### Assumption while developing this application:
 `GET / indexState` is a get request to show all the created and adjusted Indexes 
