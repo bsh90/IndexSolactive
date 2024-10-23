@@ -192,6 +192,9 @@ public class IndexService {
     public ResponseEntity getLatestState(String index_name) {
         HttpHeaders responseHeaders = new HttpHeaders();
         List<IndexEntity> indexEntities = indexRepository.findByIndexName(index_name);
+        if (indexEntities.isEmpty()) {
+            return new ResponseEntity<>(null, responseHeaders, HttpStatusCode.valueOf(404));
+        }
         List<IndexDto> indexDtos = indexEntities.stream().map(index -> indexMapper.from(index)).toList();
         return new ResponseEntity<>(indexDtos, responseHeaders, HttpStatusCode.valueOf(200));
     }

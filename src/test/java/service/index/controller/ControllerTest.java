@@ -116,4 +116,199 @@ class ControllerTest {
                 .expectStatus().isEqualTo(200)
                 .expectBody().equals(getIndexDto());
     }
+
+    @Test
+    void duplicateIndex_createIndex() {
+        happyPath_createIndex();
+
+        IndexDto indexDto = getIndexDto();
+        CreationInputDto input = new CreationInputDto(indexDto);
+
+        webTestClient
+                .post()
+                .uri("/create")
+                .body(Mono.just(input), CreationInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(409);
+    }
+
+    @Test
+    void blankIndexName_createIndex() {
+        IndexshareDto indexshareDto1 = new IndexshareDto("A.OQ", 10.0, 20.0);
+        IndexshareDto indexshareDto2 = new IndexshareDto("B.OQ", 20.0, 30.0);
+        IndexDto indexDto = new IndexDto("", asList(indexshareDto1, indexshareDto2));
+        CreationInputDto input = new CreationInputDto(indexDto);
+
+        webTestClient
+                .post()
+                .uri("/create")
+                .body(Mono.just(input), CreationInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(400);
+    }
+
+    @Test
+    void lessThanTwoShare_createIndex() {
+        IndexshareDto indexshareDto1 = new IndexshareDto("A.OQ", 10.0, 20.0);
+        IndexDto indexDto = new IndexDto("INDEX_1", asList(indexshareDto1));
+        CreationInputDto input = new CreationInputDto(indexDto);
+
+        webTestClient
+                .post()
+                .uri("/create")
+                .body(Mono.just(input), CreationInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(400);
+    }
+
+    @Test
+    void blankShareName_createIndex() {
+        IndexshareDto indexshareDto1 = new IndexshareDto("A.OQ", 10.0, 20.0);
+        IndexshareDto indexshareDto2 = new IndexshareDto("", 20.0, 30.0);
+        IndexDto indexDto = new IndexDto("INDEX_1", asList(indexshareDto1, indexshareDto2));
+        CreationInputDto input = new CreationInputDto(indexDto);
+
+        webTestClient
+                .post()
+                .uri("/create")
+                .body(Mono.just(input), CreationInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(400);
+    }
+
+    @Test
+    void negativeSharePrice_createIndex() {
+        IndexshareDto indexshareDto1 = new IndexshareDto("A.OQ", 10.0, 20.0);
+        IndexshareDto indexshareDto2 = new IndexshareDto("B.OQ", -20.0, 30.0);
+        IndexDto indexDto = new IndexDto("INDEX_1", asList(indexshareDto1, indexshareDto2));
+        CreationInputDto input = new CreationInputDto(indexDto);
+
+        webTestClient
+                .post()
+                .uri("/create")
+                .body(Mono.just(input), CreationInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(400);
+    }
+
+    @Test
+    void zeroShareNumber_createIndex() {
+        IndexshareDto indexshareDto1 = new IndexshareDto("A.OQ", 10.0, 20.0);
+        IndexshareDto indexshareDto2 = new IndexshareDto("B.OQ", 20.0, 0.0);
+        IndexDto indexDto = new IndexDto("INDEX_1", asList(indexshareDto1, indexshareDto2));
+        CreationInputDto input = new CreationInputDto(indexDto);
+
+        webTestClient
+                .post()
+                .uri("/create")
+                .body(Mono.just(input), CreationInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(400);
+    }
+
+    @Test
+    void noIndex_adjustIndex_additionOperation() {
+        AdditionOperationDto additionOperationDto = new AdditionOperationDto("E.OQ", 10.0, 20.0, "INDEX_1");
+        AdjustmentInputDto input = new AdjustmentInputDto(additionOperationDto, null, null);
+
+        webTestClient
+                .post()
+                .uri("/indexAdjustment")
+                .body(Mono.just(input), AdjustmentInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(404);
+    }
+
+    @Test
+    void foundExistingShare_adjustIndex_additionOperation() {
+        happyPath_createIndex();
+        AdditionOperationDto additionOperationDto = new AdditionOperationDto("A.OQ", 10.0, 20.0, "INDEX_1");
+        AdjustmentInputDto input = new AdjustmentInputDto(additionOperationDto, null, null);
+
+        webTestClient
+                .post()
+                .uri("/indexAdjustment")
+                .body(Mono.just(input), AdjustmentInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(202);
+    }
+
+    @Test
+    void notFound_adjustIndex_deletionOperation() {
+        DeletionOperationDto deletionOperationDto = new DeletionOperationDto("DELETION", "D.OQ", "INDEX_1");
+        AdjustmentInputDto input = new AdjustmentInputDto(null, deletionOperationDto, null);
+
+        webTestClient
+                .post()
+                .uri("/indexAdjustment")
+                .body(Mono.just(input), AdjustmentInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(404);
+    }
+
+    @Test
+    void notFoundshare_adjustIndex_deletionOperation() {
+        happyPath_createIndex();
+        DeletionOperationDto deletionOperationDto = new DeletionOperationDto("DELETION", "G.OQ", "INDEX_1");
+        AdjustmentInputDto input = new AdjustmentInputDto(null, deletionOperationDto, null);
+
+        webTestClient
+                .post()
+                .uri("/indexAdjustment")
+                .body(Mono.just(input), AdjustmentInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(401);
+    }
+
+    @Test
+    void lessThanTwoShare_adjustIndex_deletionOperation() {
+        IndexshareDto indexshareDto3 = new IndexshareDto("C.OQ", 30.0, 40.0);
+        IndexshareDto indexshareDto4 = new IndexshareDto("D.OQ", 40.0, 50.0);
+        IndexDto indexDto = new IndexDto("INDEX_1", asList(indexshareDto3,
+                indexshareDto4));
+        CreationInputDto creationInputDto = new CreationInputDto(indexDto);
+
+        webTestClient
+                .post()
+                .uri("/create")
+                .body(Mono.just(creationInputDto), CreationInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(201);
+
+        DeletionOperationDto deletionOperationDto = new DeletionOperationDto("DELETION", "D.OQ", "INDEX_1");
+        AdjustmentInputDto input = new AdjustmentInputDto(null, deletionOperationDto, null);
+
+        webTestClient
+                .post()
+                .uri("/indexAdjustment")
+                .body(Mono.just(input), AdjustmentInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(405);
+    }
+
+    @Test
+    void notFoundShare_adjustIndex_dividendOperation() {
+        happyPath_createIndex();
+        DividendOperationDto dividendOperationDto = new DividendOperationDto("CASH_DIVIDEND", "G.OQ", 2.0);
+        AdjustmentInputDto input = new AdjustmentInputDto(null, null, dividendOperationDto);
+
+        webTestClient
+                .post()
+                .uri("/indexAdjustment")
+                .body(Mono.just(input), AdjustmentInputDto.class)
+                .exchange()
+                .expectStatus().isEqualTo(401);
+    }
+
+    @Test
+    void notFoundIndex_getLatestState() {
+        happyPath_createIndex();
+        webTestClient
+                .get()
+                .uri(uriBuilder -> uriBuilder.path("/indexState/INDEX_3")
+                        .queryParam("index_name", "INDEX_3").build())
+                .exchange()
+                .expectStatus().isEqualTo(404)
+                .expectBody().equals(getIndexDto());
+    }
 }
