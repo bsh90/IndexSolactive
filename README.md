@@ -1,5 +1,7 @@
 # Getting Started
 
+This is a project for Solactive company as part of their recruitment process.
+
 ### Installation and Running the project
 This application is made by gradle, springboot 3.3.4 and java 17. 
 After installing the requirments, run the application by `./gradlew bootRun`.
